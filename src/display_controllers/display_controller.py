@@ -26,3 +26,8 @@ class DisplayController:
 
         self.matrix_display_obj = matrix_display.MatrixDisplay(n_cascading_matrix, block_orientation_matrix, rotation_matrix, inreverse_matrix) # init matrix object
         # self.seven_segment_display = sevensegment_display.SevenSegmentDisplay() # init seven segment object
+
+        
+        
+        # ===== TODO: just for testing =====
+        self.matrix_display_obj.update_display(self.data_sources_info["battery_soc"]["name"], self.data_sources_info["battery_soc"]["alias_and_unit"])

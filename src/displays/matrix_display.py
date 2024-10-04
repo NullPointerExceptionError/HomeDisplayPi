@@ -29,13 +29,13 @@ class MatrixDisplay:
         self.device.contrast(0) # darkest property
         
     
-    def update_display(self, data:str, unit:str):
+    def update_display(self, source_name:str, unit:str):
         """Changes text on matrix
         Args:
-            data (str): text to update matrix
+            source_name (str): text to update matrix
             unit (str): unit of updated data
         """
-        # show_message(self.device, data, fill="white", font=self.font, scroll_delay=self.scroll_delay)
+        show_message(self.device, source_name, fill="white", font=self.font, scroll_delay=self.scroll_delay)
         with canvas(self.device) as draw:
             # TODO: alias flush left, unit flush right without creating new character set
             if unit[-1] == "C": # Celsius as unit (last letter is "C")

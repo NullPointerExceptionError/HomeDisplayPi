@@ -9,13 +9,13 @@ def main():
                                                 "load_total_active_power" : {"name" : "Verbrauch",
                                                                             "alias_and_unit" : "V W",
                                                                             "is_inverter_item" : True},
-                                                "battery_soc" : {"name" : "Batterieladestand",
+                                                "battery_soc" : {"name" : "Batterie",
                                                                 "alias_and_unit" : "B %",
                                                                 "is_inverter_item" : True},
-                                                "temperature_corridor" : {"name" : "",
+                                                "temperature_corridor" : {"name" : "Temperatur",
                                                                         "alias_and_unit" : "T C",
                                                                         "is_inverter_item" : False},
-                                                "humidity_corridor" : {"name" : "",
+                                                "humidity_corridor" : {"name" : "Luftfeuchtigkeit",
                                                                         "alias_and_unit" : "L %",
                                                                         "is_inverter_item" : False}}
                                                 # Key: name of data source (same name as inverter-item if inverter_item!)
