@@ -1,13 +1,13 @@
 import threading
 import time
 from displays import matrix_display
-from displays import sevensegment_display
+from displays import seven_segment_display
 
 class DisplayController:
-    def __init__(self, data_sources_info:dict[str:dict[str:str]], n_cascading_matrix:int=1, block_orientation_matrix:int=0, rotation_matrix:int=0, inreverse_matrix:bool=False):
+    def __init__(self, data_sources_info:dict[str:dict[str:str]], n_cascading_matrix:int=1, block_orientation_matrix:int=0, rotation_matrix:int=0, inreverse_matrix:bool=False, n_cascading_segment=1):
         """
         Args:
-            data_sources (list): all data sources as string
+            data_sources_info (dict[str:dict[str:str]]): all data sources and their characteristics as string
             n_cascading_matrix (int): number of cascaded matrices (MAX7219) - [>=1]
             block_orientation_matrix (int): Corrects block orientation when wired vertically - [0, 90, -90]
             rotation_matrix (int): Rotate display - [0=0°, 1=90°, 2=180°, 3=270°]
@@ -25,9 +25,10 @@ class DisplayController:
         self.running = True # flag for thread if system is running
 
         self.matrix_display_obj = matrix_display.MatrixDisplay(n_cascading_matrix, block_orientation_matrix, rotation_matrix, inreverse_matrix) # init matrix object
-        # self.seven_segment_display = sevensegment_display.SevenSegmentDisplay() # init seven segment object
+        self.seven_segment_display_obj = seven_segment_display.SevenSegmentDisplay(n_cascading_segment) # init seven segment object
 
         
         
         # ===== TODO: just for testing =====
         self.matrix_display_obj.update_display(self.data_sources_info["battery_soc"]["name"], self.data_sources_info["battery_soc"]["alias_and_unit"])
+        self.seven_segment_display_obj.update_display(str(3.7))

@@ -45,9 +45,4 @@ class MatrixDisplay:
         time.sleep(10)
 
 
-####### TODO: just for testing #######
-# matrix = MatrixDisplay(n_cascading=2, rotation=2)
-# matrix.device.contrast(0)
-# matrix.update_display("PV-in", "T C")
-
 
