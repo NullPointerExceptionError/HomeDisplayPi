@@ -20,7 +20,7 @@ class SevenSegmentDisplay:
     def update_display(self, value:float):
         """Changes value on seven segment display
         Args:
-            value (int): value to update seven segment display
+            value (float): value to update seven segment display
         """
         num_spaces = self.segment.device.cascaded * 8 - len(value.replace(".", "")) # available digits - required digits (without dots)
         right_aligned_text = " " * num_spaces + value
