@@ -1,4 +1,5 @@
 from sungrow_websocket import SungrowWebsocket
+from aiohttp import ClientConnectorError # to catch connection error
 
 class SolarData:
     def __init__(self, ip_address:str, locale:str="en_US"):
@@ -9,7 +10,7 @@ class SolarData:
         """
         self.ip_address = ip_address
         self.locale = locale
-        self.sungrow = SungrowWebsocket(ip_address, locale) # inverter object
+        self.sungrow = SungrowWebsocket(self.ip_address, locale=self.locale) # inverter object
 
     def get_data(self, item_name:str) -> float:
         """requets data from inverter and returns its value
@@ -19,5 +20,16 @@ class SolarData:
         Returns:
             float: value of requested data (uses default unit of inverter, except of watts (kW instead of W))
         """
-        data = self.sungrow.get_data()
+        try:
+            data = self.sungrow.get_data()
+            value = data[item_name].value
+            if data[item_name].unit == "kW":
+                value = float(value) * 1000 # unit kW -> W
+            return value
+        except ClientConnectorError as e: # no connection to inverter
+            print("ClientConnectionError:", e)
+        except KeyError as e:
+            print("KeyError: Key ", e, " is no item of inverter")
+
+
         
