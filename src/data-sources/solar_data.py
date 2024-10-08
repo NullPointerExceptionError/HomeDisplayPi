@@ -23,7 +23,6 @@ class SolarData:
         """
         try:
             data = self.sungrow.get_data()
-            #print(data)
             value = data[item_name].value
             if data[item_name].unit == "kW":
                 value = float(value) * 1000 # unit kW -> W
