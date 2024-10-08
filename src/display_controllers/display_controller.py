@@ -16,20 +16,20 @@ class DisplayController:
                  n_cascading_segment=1):
         """
         Args:
-            data_sources_info (dict[str:dict[str:str]]): all data sources and their characteristics as string
+            data_sources_info (dict[str:dict[str:any]]): all data sources and their characteristics as string
             n_cascading_matrix (int): number of cascaded matrices (MAX7219) - [>=1]
             block_orientation_matrix (int): Corrects block orientation when wired vertically - [0, 90, -90]
             rotation_matrix (int): Rotate display - [0=0°, 1=90°, 2=180°, 3=270°]
             inreverse_matrix (bool): Set to true if blocks are in reverse order - [True, False]
         """
-        self.data_sources_info:dict[str:dict[str:str]] = data_sources_info # all data source info
+        self.data_sources_info:dict[str:dict[str:any]] = data_sources_info # all data source info
         self.data_sources:list = list(data_sources_info.keys()) # all data sources as string (unique name)
         self.current_index:int = 0 # index of currently showed data source
-        self.auto_change_interval = 10 # delay before next data source change
+        self.auto_change_interval = 20 # delay before next data source change
         self.auto_change_thread = None # thread for changing datasources automatically
         self.lock = threading.Lock() # locks thread
         self.paused_auto_change:bool = False # indicates whether auto change is running
-        self.reset_event = threading.Event() # starts auto change thrad
+        self.reset_event = threading.Event() # starts auto change thread
         self.update_thread = None # thread for value updates of current data source
         self.running:bool = True # flag for thread if system is running
 
@@ -65,11 +65,11 @@ class DisplayController:
                 elif source == "humidity":
                     value = self.climate_obj.get_humidity()
                 else:
-                    value = None
+                    value = "no data"
             # expand if-condition here if you have another data source library/file
 
             if value == None:
-                return None
+                return "no data"
             else: # returns float if value has decimal places !=0
                 if float(value) == round(float(value)): # if integer value (without decimal places)
                     return int(float(value))
@@ -77,6 +77,7 @@ class DisplayController:
                     return float(value)
         except KeyError as e:
             print("KeyError:", e)
+            return "no data"
     
     def update_displays(self):
         """updates text and value from displays to next data source
@@ -88,4 +89,54 @@ class DisplayController:
         self.seven_segment_display_obj.update_display("") # clear sevensegment first
         self.matrix_display_obj.update_display(source_name, source_unit) # scrolling text, then alias + unit
         self.seven_segment_display_obj.update_display(value) # show numeric value
-        time.sleep(5)
+
+    def auto_update(self):
+        """Switches data source after auto_change_interval seconds
+        """
+        while self.running:
+            with self.lock: # lock thread 
+                if not self.paused_auto_change: # if not paused (e.g. for button-click event)
+                    self.switch_data_source()
+            self.reset_event.wait(self.data_sources_info[self.data_sources[self.current_index]]["duration"]) # wait for event or next timeout
+
+    def pause_auto_update(self):
+        """Pause auto changing data sources
+        """
+        with self.lock: # lock thread
+            self.paused = True
+        self.reset_event.clear()
+        time.sleep(30) # start auto changing after 30s
+        with self.lock:
+            self.paused = False
+        self.reset_event.set() # set event
+
+    def start_auto_update_thread(self):
+        """starts auto changing data sources in background thread
+        """
+        self.auto_change_thread = threading.Thread(target=self.auto_update) # creates thread for auto changing data sources
+        self.auto_change_thread.start() # starts this thread
+    
+    def start_update_thread(self):
+        """Starts Thread for value updates every second
+        """
+        self.update_thread = threading.Thread(target=self.update_current_data_source) # creates thread for updating value of current data source
+        self.update_thread.start() # starts this thread
+    
+    def update_current_data_source(self):
+        """update value of current data source
+        """
+        while self.running:
+            with self.lock: # lock thread
+                source = self.data_sources[self.current_index]
+                value = self.get_value_from_source(source)
+                self.seven_segment_display_obj.update_display(value)
+            time.sleep(1)
+    
+    def stop(self):
+        """Ends all threads and process controlled
+        """
+        self.running = False
+        if self.update_thread: # if thread is not None
+            self.update_thread.join() # waits until the thread terminates
+        if self.auto_change_thread: # if thread is not None
+            self.auto_change_thread.join() # waits until the thread terminates

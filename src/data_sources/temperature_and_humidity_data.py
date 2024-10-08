@@ -34,9 +34,13 @@ class TemperatureAndHumidity:
         Returns:
             list[str]: array of lines from file
         """
-        with open(self.device_file, "r") as d_file:
-            lines = d_file.readlines()
-        return lines
+        try:
+            with open(self.device_file, "r") as d_file:
+                lines = d_file.readlines()
+            return lines
+        except FileNotFoundError as e:
+            print("FileNotFoundError:", e)
+            return[". crc=00", ". t=0"]
     
     def is_valid_ds18(self, lines) -> bool:
         """returns if ds18 returns valid values
