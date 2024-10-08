@@ -1,5 +1,6 @@
 from sungrow_websocket import SungrowWebsocket
 from aiohttp import ClientConnectorError # to catch connection error
+from websockets import ConnectionClosedError, InvalidMessage
 
 class SolarData:
     def __init__(self, ip_address:str, locale:str="en_US"):
@@ -29,7 +30,11 @@ class SolarData:
         except ClientConnectorError as e: # no connection to inverter
             print("ClientConnectionError:", e)
         except KeyError as e:
-            print("KeyError: Key ", e, " is no item of inverter")
+            print("KeyError: Key", e, "is no item of inverter")
+        except ConnectionClosedError as e:
+            print("ConnectionClosedError:", e, "- please check if another device is currently accessing inverter host")
+        except InvalidMessage as e:
+            print("InvalidMessageError:", e, "- please check if another device is currently accessing inverter host")
 
 
         
