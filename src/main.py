@@ -12,10 +12,10 @@ def main():
                                                 "battery_soc" : {"name" : "Batterie",
                                                                 "alias_and_unit" : "B %",
                                                                 "is_inverter_item" : True},
-                                                "temperature_corridor" : {"name" : "Temperatur",
+                                                "temperature" : {"name" : "Temperatur",
                                                                         "alias_and_unit" : "T C",
                                                                         "is_inverter_item" : False},
-                                                "humidity_corridor" : {"name" : "Luftfeuchtigkeit",
+                                                "humidity" : {"name" : "Luftfeuchtigkeit",
                                                                         "alias_and_unit" : "L %",
                                                                         "is_inverter_item" : False}}
                                                 # Key: name of data source (same name as inverter-item if inverter_item!)
@@ -23,6 +23,10 @@ def main():
                                                 # name: name to show on display ("" for default name)
                                                 # alias_and_unit: alias of data source with unit (showed after full name scrolled) - e.g. "B %" for Battery charge level in percent
                                                 # is_inverter_item: bool if source from inverter (sources from inverter dont need changes in another script)
+
+    # inverter information (type in your inverter ip address)
+    inverter_ip = "192.168.178.47"
+    inverter_locale = "en_US" # language for data source keys
 
     # matrix adjustments
     n_cascading_matrix:int = 2 # number of cascaded matrices (MAX7219) - [>=1]
@@ -34,12 +38,20 @@ def main():
     n_cascading_segment = 1 # number of cascaded seven segment displays - [>=1]
     
     display_controller_obj = display_controller.DisplayController(data_sources_info,
+                                                                  inverter_ip,
+                                                                  inverter_locale=inverter_locale,
                                                                   n_cascading_matrix=n_cascading_matrix,
                                                                   block_orientation_matrix=block_orientation_matrix,
                                                                   rotation_matrix=rotation_matrix,
                                                                   inreverse_matrix=inreverse_matrix,
                                                                   n_cascading_segment=n_cascading_segment) # init display controller object
 
+    display_controller_obj.switch_data_source()
+    display_controller_obj.switch_data_source()
+    display_controller_obj.switch_data_source()
+    display_controller_obj.switch_data_source()
+    display_controller_obj.switch_data_source()
+    display_controller_obj.switch_data_source()
 
 if __name__ == "__main__":
     main()

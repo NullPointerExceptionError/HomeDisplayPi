@@ -22,7 +22,18 @@ class SevenSegmentDisplay:
         Args:
             value (float): value to update seven segment display
         """
-        num_spaces = self.segment.device.cascaded * 8 - len(value.replace(".", "")) # available digits - required digits (without dots)
-        right_aligned_text = " " * num_spaces + value
+        num_spaces = self.segment.device.cascaded * 8 - len(str(value).replace(".", "")) # available digits - required digits (without dots)
+        right_aligned_text = " " * num_spaces + str(value)
         self.segment.text = right_aligned_text # draws value
-        time.sleep(10)
+
+    def set_brightness(self, level:int):
+        """Brightness property
+        Args:
+            level (int): numeric value from 0 up to 15
+        """
+        # set min and max value if param out of brightness range
+        if level < 0:
+            level = 0
+        elif level > 15:
+            level = 15
+        self.segment.device.contrast(level * 16) # set brightness
