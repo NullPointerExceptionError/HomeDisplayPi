@@ -3,7 +3,7 @@ import time
 
 def main():
     # data sources names and units
-    data_sources_info:dict[str:dict[str:str]] = {"total_active_power" : {"name" : "PV-in",
+    data_sources_info:dict[str:dict[str:str]] = {"total_dcpower" : {"name" : "PV-in",
                                                                         "alias_and_unit" : "P W",
                                                                         "is_inverter_item" : True},
                                                 "load_total_active_power" : {"name" : "Verbrauch",
