@@ -1,7 +1,6 @@
 import os
 import glob
 import Adafruit_DHT
-import time
 
 class TemperatureAndHumidity:
     def __init__(self):

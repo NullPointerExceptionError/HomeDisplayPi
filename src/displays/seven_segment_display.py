@@ -1,9 +1,6 @@
-import time
-from datetime import datetime
-
 from luma.led_matrix.device import max7219
 from luma.core.interface.serial import spi, noop
-from luma.core.virtual import viewport, sevensegment
+from luma.core.virtual import sevensegment
 
 class SevenSegmentDisplay:
     def __init__(self, n_cascading:int=1):
@@ -37,3 +34,4 @@ class SevenSegmentDisplay:
         elif level > 15:
             level = 15
         self.segment.device.contrast(level * 16) # set brightness
+        

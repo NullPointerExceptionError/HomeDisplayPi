@@ -1,13 +1,9 @@
-import re
-import time
-import argparse
-
 from luma.led_matrix.device import max7219
 from luma.core.interface.serial import spi, noop
 from luma.core.render import canvas
 from luma.core.virtual import viewport
 from luma.core.legacy import text, show_message
-from luma.core.legacy.font import proportional, CP437_FONT, TINY_FONT, SINCLAIR_FONT, LCD_FONT
+from luma.core.legacy.font import proportional, LCD_FONT
 
 class MatrixDisplay:
     def __init__(self, n_cascading:int=1, block_orientation:int=0, rotation:int=0, inreverse:bool=False):
@@ -54,6 +50,4 @@ class MatrixDisplay:
         elif level > 15:
             level = 15
         self.device.contrast(level * 16) # set brightness
-
-
 

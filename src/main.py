@@ -1,5 +1,4 @@
 from display_controllers import display_controller
-import time
 
 def main():
     # data sources names and units

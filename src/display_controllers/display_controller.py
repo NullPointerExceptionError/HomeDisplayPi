@@ -1,5 +1,7 @@
 import threading
 import time
+import datetime
+
 from displays import matrix_display
 from displays import seven_segment_display
 from data_sources import solar_data
@@ -35,8 +37,10 @@ class DisplayController:
 
         self.matrix_display_obj = matrix_display.MatrixDisplay(n_cascading_matrix, block_orientation_matrix, rotation_matrix, inreverse_matrix) # init matrix object
         self.seven_segment_display_obj = seven_segment_display.SevenSegmentDisplay(n_cascading_segment) # init seven segment object
-        self.matrix_display_obj.set_brightness(1) # brightness level 2
-        self.seven_segment_display_obj.set_brightness(4)
+        self.matrix_brightness = 1 # brightness level 2
+        self.segment_brightness = 4 # brightness level 5
+        self.matrix_display_obj.set_brightness(self.matrix_brightness)
+        self.seven_segment_display_obj.set_brightness(self.segment_brightness)
 
         self.solar_obj = solar_data.SolarData(inverter_ip, locale=inverter_locale) # init inverter object
         self.climate_obj = temperature_and_humidity_data.TemperatureAndHumidity() # init climate data object
@@ -97,15 +101,16 @@ class DisplayController:
             with self.lock: # lock thread 
                 if not self.paused_auto_change: # if not paused (e.g. for button-click event)
                     self.switch_data_source()
+            self.adjust_display_brightness_based_on_time()
             self.reset_event.wait(self.data_sources_info[self.data_sources[self.current_index]]["duration"]) # wait for event or next timeout
 
-    def pause_auto_update(self):
+    def pause_auto_update(self, duration=30):
         """Pause auto changing data sources
         """
         with self.lock: # lock thread
             self.paused = True
         self.reset_event.clear()
-        time.sleep(30) # start auto changing after 30s
+        time.sleep(duration) # start auto changing after 30s
         with self.lock:
             self.paused = False
         self.reset_event.set() # set event
@@ -131,6 +136,18 @@ class DisplayController:
                 value = self.get_value_from_source(source)
                 self.seven_segment_display_obj.update_display(value)
             time.sleep(1)
+    
+    def adjust_display_brightness_based_on_time(self):
+        """decreases brightness of displays in the night
+        """
+        current_time = datetime.datetime.now().time()
+        if datetime.time(20,0) <= current_time or current_time <= datetime.time(8, 0):
+            # lowest brightness
+            self.matrix_display_obj.set_brightness(0)
+            self.seven_segment_display_obj.set_brightness(0)
+        else:
+            self.matrix_display_obj.set_brightness(self.matrix_brightness)
+            self.seven_segment_display_obj.set_brightness(self.segment_brightness)
     
     def stop(self):
         """Ends all threads and process controlled
