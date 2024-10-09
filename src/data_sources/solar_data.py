@@ -35,6 +35,8 @@ class SolarData:
             print("ConnectionClosedError:", e, "- please check if another device is currently accessing inverter host")
         except InvalidMessage as e:
             print("InvalidMessageError:", e, "- please check if another device is currently accessing inverter host")
+        except TimeoutError as e:
+            print("TimeoutError:", e)
 
 
         
