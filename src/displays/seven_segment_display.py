@@ -19,8 +19,11 @@ class SevenSegmentDisplay:
         Args:
             value (float): value to update seven segment display
         """
-        num_spaces = self.segment.device.cascaded * 8 - len(str(value).replace(".", "")) # available digits - required digits (without dots)
+        available_digits = self.segment.device.cascaded * 8
+        num_spaces = available_digits - len(str(value).replace(".", "")) # available digits - required digits (without dots)
         right_aligned_text = " " * num_spaces + str(value)
+        if len(right_aligned_text) > available_digits: # displays only first few digits if text too long
+            right_aligned_text = right_aligned_text[:available_digits]
         self.segment.text = right_aligned_text # draws value
 
     def set_brightness(self, level:int):
