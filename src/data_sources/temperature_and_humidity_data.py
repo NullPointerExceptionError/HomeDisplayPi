@@ -8,6 +8,8 @@ class TemperatureAndHumidity:
         try:
             os.system("modprobe w1-gpio")
             os.system("modprobe w1-therm")
+        except Exception as e:
+            pass
 
         base_dir = "/sys/bus/w1/devices/"
         device_folder = glob.glob(base_dir + "28*") # search for DS18B20 device
