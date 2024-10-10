@@ -61,21 +61,21 @@ TODO
 
 # Adjustments
 Basic adjustments are in `main.py` in the src folder. If you have advanced knowledge, you can also adjust a few things in the `display_controller.py`
-## Data sources
+### Data sources
 - You can add or remove inverter items by addind or removing a block in the `data_sources_info` variable. Make sure that you use the correct item name when adding an inverter item (e.g. "battery_soc" for charge level of your battery. You can find the correct keys by printing out the `data` variable in `solar_data.py`).
 - By changing the `"name" : ""`, the scrolling text (LED matrix) of the data source will be customized.
 - By changing the `"alias_and_unit" : ""`, the text showed after full name scrolled can be customized - (e.g. "B %" for Battery charge level in percent)
 - By changing the `"is_inverter_item" : `, you can toggle if this item needs to request the inverter or if its a sensor (if you add sensors, you have to change more in the code)
 - By changing the `"duration" : `, you can set the duration in seconds for which the data of a data source should be displayed
-## Inverter
+### Inverter
 - `inverter_ip = ""`: ip address of the network module of your inverter
 - `inverter_locale = ""`: this affects the data language of the inverter
-## LED Matrix (8x8 modules)
+### LED Matrix (8x8 modules)
 - `n_cascading_matrix = `: number of cascaded matrices - e.g. 4 if you have 4 matrices
 - `block_orientation_matrix = `: Corrects block orientation when wired vertically (0, 90 or -90)
 - `rotation_matrix = `: rotate display (0=0°, 1=90°, 2=180°, 3=270°)
 - `inreverse_matrx = `: toggle if blocks are in reverse order (True, False)
-## Seven segment display (8-digit modules)
+### Seven segment display (8-digit modules)
 - `n_cascading_segment = `: number of cascaded seven segment modules - e.g. 2 if you have 2 8-digit modules
 
 # Contributing, problems and errors
