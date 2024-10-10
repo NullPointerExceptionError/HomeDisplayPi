@@ -47,7 +47,25 @@ If you don't have all sensors or more than these sensors, you can also use this 
 7. Navigate into the `main.py` file in the src folder and type in your inverter ip address (`inverter_ip = ""`). You can find your inverters' ip-address simply by using apps like [WIFIman](https://play.google.com/store/apps/details?id=com.ubnt.usurvey&hl=de)
 
 # Wiring
-TODO
+Note: The programm works also without the more accurate DS18B20 sensor.
+| GPIO- 	| PIN on Raspberry 	| port on device | device  	                     |
+| :-:	   | :-:	               | :-:	           | :-:                             |
+| 2     	| 5V    	            | VCC	           | LED-Matrix 8x8 module           |
+| 6     	| GND   	            | GND	           | "                               |
+| 19     | MOSI (GPIO-10)    	| DIN            | "                               |
+| 24     | CE0 (GPIO-8)    	| CS 	           | "                               |
+| 23     | SCLK (GPIO-11)   	| CLK	           | "                               |
+| 4     	| 5V                	| VCC            | seven segment 8-digit module    |
+| 25     | GND             	| GND	           | "                               |
+| 19     | MOSI (GPIO-10)    	| DIN	           | "                               |
+| 26     | CE1 (GPIO-7)    	| CS 	           | "                               |
+| 23     | SCLK (GPIO-11)    	| CLK	           | "                               |
+| 1     	| 3.3V             	| red wire       | DS18B20 temperature sensor      |
+| 9     	| GND             	| black wire     | "                               |
+| 7     	| GPCLK0 (GPIO-4)   	| yellow wire    | "                               |
+| 1     	| 3.3V              	| 1. PIN         | DHT-11 temperature and humidity |
+| 11     | GPIO-17          	| 2. PIN         | "                               |
+| 9     	| GND             	| 4. PIN         | "                               |
 
 # How to use
 1. Activate virtual environment in the HomeDisplayPi folder
@@ -56,8 +74,18 @@ TODO
    ```
 2. Start the program
    ```bash
-   python3 src/main.py
+   python3 src/main.py &
    ```
+   If you want to have a log file with errors, use the following command instead (also possible via ssh).
+   ```bash
+   nohup python src/main.py > output.log 2>&1 &
+   ```
+To stop the program use
+```bash
+ps aux | grep main.py
+kill -2 <PID>
+```
+replace `<PID>` with the far left number of the correct process (something like `src/main.py`).
 
 # Adjustments
 Basic adjustments are in `main.py` in the src folder. If you have advanced knowledge, you can also adjust a few things in the `display_controller.py`
@@ -79,4 +107,4 @@ Basic adjustments are in `main.py` in the src folder. If you have advanced knowl
 - `n_cascading_segment = `: number of cascaded seven segment modules - e.g. 2 if you have 2 8-digit modules
 
 # Contributing, problems and errors
-Contributions to this project are welcome! If you find bugs, errors, have suggestions for improvement or would like to suggest new features, please open an [issue](https://github.com/NullPointerExceptionError/HomeDisplayPi/issues) or [pull request](https://github.com/NullPointerExceptionError/HomeDisplayPi/pulls). I look forward to your feedback and ideas.
+Contributions to this project are welcome! If you find bugs, errors, have suggestions for improvement or would like to suggest new features, feel free to open an [issue](https://github.com/NullPointerExceptionError/HomeDisplayPi/issues) or [pull request](https://github.com/NullPointerExceptionError/HomeDisplayPi/pulls).
