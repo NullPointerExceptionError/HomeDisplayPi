@@ -5,11 +5,8 @@ import Adafruit_DHT
 class TemperatureAndHumidity:
     def __init__(self):
         # load 1-wire modules
-        try:
-            os.system("modprobe w1-gpio")
-            os.system("modprobe w1-therm")
-        except Exception as e:
-            pass
+        os.system("modprobe w1-gpio")
+        os.system("modprobe w1-therm")
 
         base_dir = "/sys/bus/w1/devices/"
         device_folder = glob.glob(base_dir + "28*") # search for DS18B20 device
