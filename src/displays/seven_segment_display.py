@@ -22,7 +22,7 @@ class SevenSegmentDisplay:
         available_digits = self.segment.device.cascaded * 8
         num_spaces = available_digits - len(str(value).replace(".", "")) # available digits - required digits (without dots)
         right_aligned_text = " " * num_spaces + str(value)
-        if len(right_aligned_text) > available_digits: # displays only first few digits if text too long
+        if len(str(value).replace(".", "")) > available_digits: # displays only first few digits if text too long
             right_aligned_text = right_aligned_text[:available_digits]
         self.segment.text = right_aligned_text # draws value
 
