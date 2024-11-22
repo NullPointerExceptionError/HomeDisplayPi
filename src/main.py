@@ -2,14 +2,14 @@ from display_controllers import display_controller
 
 def main():
     # data sources names and units
-    data_sources_info:dict[str:dict[str:any]] = {"total_dcpower" : {"name" : "PV-in",
-                                                                        "alias_and_unit" : "P W",
-                                                                        "is_inverter_item" : True,
-                                                                        "duration": 15},
-                                                "load_total_active_power" : {"name" : "Verbrauch",
+    data_sources_info:dict[str:dict[str:any]] = {"load_total_active_power" : {"name" : "Verbrauch",
                                                                             "alias_and_unit" : "V W",
                                                                             "is_inverter_item" : True,
                                                                             "duration": 15},
+                                                "total_dcpower" : {"name" : "PV-in",
+                                                                        "alias_and_unit" : "P W",
+                                                                        "is_inverter_item" : True,
+                                                                        "duration" : 15},
                                                 "battery_soc" : {"name" : "Batterie",
                                                                 "alias_and_unit" : "B %",
                                                                 "is_inverter_item" : True,
