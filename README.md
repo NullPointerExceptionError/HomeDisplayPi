@@ -44,7 +44,7 @@ If you don't have all sensors or more than these sensors, you can also use this 
    ```bash
    pip install -r requirements.txt
    ```
-7. Navigate into the `main.py` file in the src folder and type in your inverter ip address (`inverter_ip = ""`). You can find your inverters' ip-address simply by using apps like [WIFIman](https://play.google.com/store/apps/details?id=com.ubnt.usurvey&hl=de)
+7. Navigate into the `main.py` file in the src folder and type in your inverter ip address (`inverter_ip = ""`). You can find your inverters' ip-address simply by using apps like [WIFIman](https://play.google.com/store/apps/details?id=com.ubnt.usurvey&hl=en)
 
 # Wiring
 Note: The programm works also without the more accurate DS18B20 sensor.
@@ -78,7 +78,7 @@ Note: The programm works also without the more accurate DS18B20 sensor.
    ```
    If you want to have a log file with errors, use the following command instead (also possible via ssh).
    ```bash
-   nohup python src/main.py > output.log 2>&1 &
+   nohup python3 src/main.py > output.log 2>&1 &
    ```
 To stop the program use
 ```bash
@@ -106,5 +106,8 @@ Basic adjustments are in `main.py` in the src folder. If you have advanced knowl
 ### Seven segment display (8-digit modules)
 - `n_cascading_segment = `: number of cascaded seven segment modules - e.g. 2 if you have 2 8-digit modules
 
-# Contributing, problems and errors
-Contributions to this project are welcome! If you find bugs, errors, have suggestions for improvement or would like to suggest new features, feel free to open an [issue](https://github.com/NullPointerExceptionError/HomeDisplayPi/issues) or [pull request](https://github.com/NullPointerExceptionError/HomeDisplayPi/pulls).
+# Button for restarting HomeDisplayPi
+If you want to have a button to easier restart HomeDisplayPi, take a look at [Restart Button (Addon for HomeDisplayPi)](https://github.com/NullPointerExceptionError/Restart-Button-for-HomeDisplayPi/).
+
+## Troubleshooting
+If you find bugs, errors, have suggestions for improvement or would like to suggest new features, feel free to open an [issue](https://github.com/NullPointerExceptionError/HomeDisplayPi/issues) or [pull request](https://github.com/NullPointerExceptionError/HomeDisplayPi/pulls).
