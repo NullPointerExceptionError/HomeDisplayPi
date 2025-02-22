@@ -11,7 +11,16 @@ class SolarData:
         """
         self.ip_address = ip_address
         self.locale = locale
-        self.sungrow = SungrowWebsocket(self.ip_address, locale=self.locale) # inverter object
+        try:
+            self.sungrow = SungrowWebsocket(self.ip_address, locale=self.locale) # inverter object
+        except Exception as e:
+            self.sungrow = None
+
+    def reconnect(self):
+        """tries reconnecting to inverter once
+        """
+        self.sungrow = SungrowWebsocket(self.ip_address, locale=self.locale)
+
 
     def get_data(self, item_name:str) -> float:
         """requets data from inverter and returns its value
@@ -22,6 +31,9 @@ class SolarData:
             float: value of requested data (uses default unit of inverter, except of watts (kW instead of W))
         """
         try:
+            if not self.sungrow:
+                self.reconnect()
+
             data = self.sungrow.get_data()
             value = data[item_name].value
             if data[item_name].unit == "kW":
@@ -29,14 +41,37 @@ class SolarData:
             return value
         except ClientConnectorError as e: # no connection to inverter
             print("ClientConnectionError:", e)
+            self.sungrow = None
+            return None
         except KeyError as e:
             print("KeyError: Key", e, "is no item of inverter")
+            self.sungrow = None
+            return None
         except ConnectionClosedError as e:
             print("ConnectionClosedError:", e, "- please check if another device is currently accessing inverter host")
+            self.sungrow = None
+            return None
         except InvalidMessage as e:
             print("InvalidMessageError:", e, "- please check if another device is currently accessing inverter host")
+            self.sungrow = None
+            return None
         except TimeoutError as e:
             print("TimeoutError:", e)
+            self.sungrow = None
+            return None
+        except OSError as e:
+            if e.errno == 113:
+                print("Host unreachable:", self.ip_address, ", check network connection")
+                self.sungrow = None
+                return None
+            else:
+                print("OSError with Code", e.errno, ":", e)
+                self.sungrow = None
+                return None
+        except Exception as e:
+            print("Unknown Error:", e)
+            self.sungrow = None
+            return None
 
 
         
