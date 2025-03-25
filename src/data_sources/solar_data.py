@@ -3,23 +3,29 @@ from aiohttp import ClientConnectorError # to catch connection error
 from websockets import ConnectionClosedError, InvalidMessage
 
 class SolarData:
-    def __init__(self, ip_address:str, locale:str="en_US"):
+    def __init__(self, ip_address:str, username:str, password:str, port:int, locale:str="en_US"):
         """
         Args:
             ip_address (str): IP-address of host (sungrow-inverter)
+            username(str): username to WiNet-S
+            password(str): password to WiNet-S
             locale(str): language specifications
+            port(int): port to WiNet-S
         """
         self.ip_address = ip_address
         self.locale = locale
+        self.port = port
+        self.username = username
+        self.password = password
         try:
-            self.sungrow = SungrowWebsocket(self.ip_address, locale=self.locale) # inverter object
+            self.sungrow = SungrowWebsocket(self.ip_address, username=self.username, password=self.password, port=self.port, locale=self.locale) # inverter object
         except Exception as e:
             self.sungrow = None
 
     def reconnect(self):
         """tries reconnecting to inverter once
         """
-        self.sungrow = SungrowWebsocket(self.ip_address, locale=self.locale)
+        self.sungrow = SungrowWebsocket(self.ip_address, username=self.username, password=self.password, port=self.port, locale=self.locale)
 
 
     def get_data(self, item_name:str) -> float:
