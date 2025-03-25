@@ -10,6 +10,9 @@ from data_sources import temperature_and_humidity_data
 class DisplayController:
     def __init__(self, data_sources_info:dict[str:dict[str:str]],
                  inverter_ip:str,
+                 username:str,
+                 password:str,
+                 port:int,
                  inverter_locale:str="en_US",
                  n_cascading_matrix:int=1,
                  block_orientation_matrix:int=0,
@@ -42,7 +45,7 @@ class DisplayController:
         self.matrix_display_obj.set_brightness(self.matrix_brightness)
         self.seven_segment_display_obj.set_brightness(self.segment_brightness)
 
-        self.solar_obj = solar_data.SolarData(inverter_ip, locale=inverter_locale) # init inverter object
+        self.solar_obj = solar_data.SolarData(inverter_ip, username, password, port, locale=inverter_locale) # init inverter object
         self.climate_obj = temperature_and_humidity_data.TemperatureAndHumidity() # init climate data object
         
 
