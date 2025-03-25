@@ -44,7 +44,7 @@ If you don't have all sensors or more than these sensors, you can also use this 
    ```bash
    pip install -r requirements.txt
    ```
-7. Navigate into the `main.py` file in the src folder and type in your inverter ip address (`inverter_ip = ""`). You can find your inverters' ip-address simply by using apps like [WIFIman](https://play.google.com/store/apps/details?id=com.ubnt.usurvey&hl=en)
+7. Navigate into the `main.py` file in the src folder and type in your inverter ip address (`inverter_ip = ""`). You can find your inverters' ip-address simply by using apps like [WIFIman](https://play.google.com/store/apps/details?id=com.ubnt.usurvey&hl=en). Then type in your username (`username = "user"`) and password (`password = "your-password"`) for the WiNet-S interface. Please note: this isn't normally the same account as for the iSolarCloud app. If you have never changed this password, leave the default values as they are.
 
 # Wiring
 Note: The programm works also without the more accurate DS18B20 sensor.
