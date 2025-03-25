@@ -29,8 +29,11 @@ def main():
                                                 # is_inverter_item: bool if source from inverter (sources from inverter dont need changes in another script)
                                                 # duration: how long source is displayed
 
-    # inverter information (type in your inverter ip address)
+    # inverter information (type in your inverter ip address, username and passwort if changed from default)
     inverter_ip = "192.168.178.47"
+    username = "user"
+    password = "pw1111"
+    port = 443
     inverter_locale = "en_US" # language for data source keys
 
     # matrix adjustments
@@ -44,6 +47,9 @@ def main():
     
     display_controller_obj = display_controller.DisplayController(data_sources_info,
                                                                   inverter_ip,
+                                                                  username,
+                                                                  password,
+                                                                  port,
                                                                   inverter_locale=inverter_locale,
                                                                   n_cascading_matrix=n_cascading_matrix,
                                                                   block_orientation_matrix=block_orientation_matrix,
