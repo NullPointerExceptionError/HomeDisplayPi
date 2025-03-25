@@ -17,7 +17,7 @@ RPi.GPIO==0.7.1
 rpi_ws281x==5.0.0
 smbus2==0.4.3
 spidev==3.6
-sungrow-websocket==0.2.2
+sungrow-websocket @ git+https://github.com/naturalnetworks/sungrow-websocket.git@b2635f586181180497d4af7baf48f06601609d65
 terminaltables==3.1.10
 websockets==13.1
 yarl==1.13.1
