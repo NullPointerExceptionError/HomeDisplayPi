@@ -31,7 +31,7 @@ class MatrixDisplay:
             source_name (str): text to update matrix
             unit (str): unit of updated data
         """
-        ##### show_message(self.device, source_name, fill="white", font=self.font, scroll_delay=self.scroll_delay)
+        show_message(self.device, source_name, fill="white", font=self.font, scroll_delay=self.scroll_delay)
         with canvas(self.device) as draw:
             # TODO: alias flush left, unit flush right without creating new character set
             if unit[-1] == "C": # Celsius as unit (last letter is "C")
