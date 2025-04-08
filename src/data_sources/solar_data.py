@@ -35,11 +35,13 @@ class SolarData:
             float: value of requested data
         """
         try:
+            if self.sungrow is None:
+                self.reconnect()
+
             result = asyncio.run(self.sungrow.async_update())
 
             if not result:
                 self.reconnect()
-                result = asyncio.run(self.sungrow.async_update())
             
             data = self.sungrow.data
             value = data[item_name]
@@ -68,13 +70,14 @@ class SolarData:
 
 
 if __name__ == "__main__":
-    sungrow = SolarData("192.168.178.47", 5, 502)
+    sungrow = SolarData("192.168.178.47", 10, 502)
     for i in range(20):
         print("---", i, "---")
         print("PV-in:", sungrow.get_data("total_dc_power"))
         import time
-        # time.sleep(5)
+        # time.sleep(2)
         print("Verbrauch", ":", sungrow.get_data("load_power"))
-        # time.sleep(5)
+        # time.sleep(2)
         print("Batterie", ":", sungrow.get_data("battery_level"))
-        # time.sleep(5)
+        # time.sleep(2)
+        
