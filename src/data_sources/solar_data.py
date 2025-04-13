@@ -1,5 +1,6 @@
 from sungrowinverter import SungrowInverter
 import asyncio
+import time
 
 class SolarData:
     def __init__(self, ip_address:str, timeout:int, port:int=502):
@@ -25,6 +26,9 @@ class SolarData:
         self.sungrow = SungrowInverter(self.ip_address, timeout=self.timeout, port=self.port)
         print("Reconnecting to inverter:", self.ip_address)
 
+    async def update_data(self, inverter):
+        return await inverter.async_update()
+
 
     def get_data(self, item_name:str) -> float:
         """requets data from inverter and returns its value
@@ -37,8 +41,14 @@ class SolarData:
         try:
             if self.sungrow is None:
                 self.reconnect()
+            
+            #result = asyncio.run(self.update_data(self.sungrow))
 
-            result = asyncio.run(self.sungrow.async_update())
+            #result = asyncio.run(self.sungrow.async_update())
+            
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            result = loop.run_until_complete(self.sungrow.async_update())
 
             if not result:
                 self.reconnect()
@@ -71,13 +81,24 @@ class SolarData:
 
 if __name__ == "__main__":
     sungrow = SolarData("192.168.178.47", 10, 502)
-    for i in range(20):
+    import time
+    for i in range(2000):
         print("---", i, "---")
         print("PV-in:", sungrow.get_data("total_dc_power"))
-        import time
+        # import time
         # time.sleep(2)
         print("Verbrauch", ":", sungrow.get_data("load_power"))
         # time.sleep(2)
         print("Batterie", ":", sungrow.get_data("battery_level"))
-        # time.sleep(2)
+        # time.sleep(1)
         
+    while False:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        result = loop.run_until_complete(sungrow.sungrow.async_update())
+
+        #Get a list data returned from the inverter.
+        if result:
+            print(sungrow.sungrow.data)
+        else:
+            print("Could not connect to inverter")
